@@ -1,15 +1,15 @@
-# Requiirements
+# Description
+As the provided file is **a degenerate case of JSON** to parse it within reasonable time and memory it will be processed **without built-in JSON functions** in Python 
+
+* To save memory the file is processed in 1MB chunks. As a result python process consumes **no more than 20 MB of RAM**.
+* Each object in the chunks is parsed with compiled regex.
+* File is **decompressed on the fly** and piped to the Python executable.
+
+# Requirements
 
 * Python (any recent version)
 * bzip2, pv
 * bigf.json.bz2 present in analysis.sh directory
-
-# Description
-As the provided file is degenerate JSON case in order to parse it with reasonable time and memory constraints it is not processed using built-in JSON in Python 
-
-* To save memory the file is processed in 1MB chunks. As a result python process consumes no more than 20 MB of ram.
-* Each object in the chunks is parsed with compiled regex.
-* File is decompressed on the fly and piped to the Python executable.
 
 # Development notes
 
