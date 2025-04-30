@@ -60,7 +60,7 @@ def count_frequencies_from_input_and_store_bins():
     parser.add_argument("--file")
     args, leftovers = parser.parse_known_args()
 
-    input_file = sys.stdin if args.file is None else open(args.file, mode="rb")
+    input_file = sys.stdin.buffer if args.file is None else open(args.file, mode="rb")
 
     # In trivial implementation I would have done:
     # import numpy as np

@@ -3,7 +3,7 @@
 def line_splitter(file, newline, chunk_size=4096):
     tail = ''
     while True:
-        chunk = file.read(chunk_size)
+        chunk = file.read(chunk_size).decode(encoding="utf-8")
         if not chunk:
             if tail:
                 yield tail

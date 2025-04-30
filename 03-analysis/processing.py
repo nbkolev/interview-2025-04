@@ -30,7 +30,7 @@ args, leftovers = parser.parse_known_args()
 input_file = None
 
 if args.stdin is not None:
-    input_file = sys.stdin
+    input_file = sys.stdin.buffer
 if args.file is not None:
     input_file = open(args.file)
 if not (args.stdin or args.file):
