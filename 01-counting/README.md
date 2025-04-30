@@ -2,8 +2,10 @@
 * Data is read by 1 MB chunks. 
 * For every chunk data is converted with `numpy.frombuffer(chunk, dtype=numpy.uint32)` and processed with `numpy.unique_counts()`
 * Frequencies in the chunk are binned by `bin_id = value % BIN_COUNT` and bins are aggregated as files in `./frequencies/{bin_id}.pickle`.
-* As a result python process consumes no more than 20 MB of RAM when processing test non white noise data.
-* A generator `get_binned_frequencies()` yields the bins to the aggregating functions for the required subtasks a) "count the unique numbers" and b) "count the unique numbers"
+* As a result python process consumes **no more than 20 MB of RAM** when processing test non white noise data.
+* A generator `get_binned_frequencies()` yields the bins to the aggregating functions for the required subtasks:
+   * a) "count the unique numbers" 
+   * b) "count the numbers seen only once"
 
 # Consideration
 * The optimal solution to this task is heavily dependent of the frequency distribution of the uint32 integers in the input file.
@@ -11,7 +13,6 @@
 Otherwise, it would be pointless to bother with chunked processing and the main processing could be reduced to:
 ```
 import numpy as np
-
 frequencies = np.unique_counts(np.fromfile(sys.stdin, dtype=np.uint32))
 ```
 
