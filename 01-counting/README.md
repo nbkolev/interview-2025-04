@@ -1,17 +1,24 @@
-# Data entropy
-Examining the file size difference between compressed and decompressed file gives us the hint that the contents are not evenly distributed as the file would be incompressible (see Shannon theorem).
-
-# Additional consideration
-As the company specializes in data storage the implementation is tailored to processing large files with efficient memory use.
-Otherwise, it is pointless to bother with chunked processing and all input could be parsed like this:
+# Consideration
+* The optimal solution to this task is heavily dependent of the frequency distribution of the uint32 integers in the input file.
+* As the company specializes in data storage the implementation is tailored to processing large files with efficient memory use.
+Otherwise, it is pointless to bother with chunked processing and the main processing is reduced to:
 ```
 import numpy as np
 
-integer_array = np.fromfile(sys.stdin, dtype=np.uint32)
+frequencies = np.unique_counts(np.fromfile(sys.stdin, dtype=np.uint32))
 ```
+
+# Description
+* Data is read by 1 MB chunks 
+* For every chunk data is converted with `numpy.frombuffer(chunk, dtype=numpy.uint32)` and processed with `numpy.unique_counts()`
+* Frequencies in the chunk are binned by `bin_id = value % BIN_COUNT` and bins are aggregated as files in `./frequencies/{bin_id}.pickle`
+* A generator `get_binned_frequencies()` yields the bins to the aggregating functions for the required subtasks a) "count the unique numbers" and b) "count the unique numbers"
+
+# Development notes
+
+* During development an example non white noise file was produced by reusing the hdd data provided `bzip2 --decompress --stdout < bigf.json.bz2 | head -c 4G  > testdata-4G.bin`
+* The processing.py executable supports --stdin and --file switches.
 
 # Requirements
 * Python + numpy (any recent versions)
 * pv, bzip2
-
-# Description

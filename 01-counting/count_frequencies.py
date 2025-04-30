@@ -4,7 +4,7 @@ from collections import defaultdict
 import numpy
 TEMPDIR = os.path.join(os.getcwd(), "frequencies")
 
-BIN_COUNT = 100
+BIN_COUNT = 1000
 
 def bin_id_2_filename(bin_id):
     return os.path.join(TEMPDIR, f"{bin_id}.pickle")
@@ -15,7 +15,7 @@ def get_bin_data(bin_id):
         return pickle.load(open(bin_id_2_filename(bin_id), "rb"))
     else:
         # Empty
-        return None
+        return {}
 
 def store_bin_data(bin_id, bin_counts):
     with open(bin_id_2_filename(bin_id), "wb") as output_file:
@@ -25,31 +25,29 @@ def store_bin_data(bin_id, bin_counts):
 
 def chunk_cruncher(array):
     uniq= numpy.unique_counts(array)
-    current_bins = {}
+    current_bins = defaultdict(lambda: defaultdict(lambda: 0))
 
     for value, count in zip(uniq.values.astype(int).tolist(), uniq.counts.astype(int).tolist()):
         bin_id = value % BIN_COUNT
-        if bin_id in current_bins:
-            current_bins[bin_id][value] = count
-        else:
-            current_bins[bin_id] = {value:count}
+        current_bins[bin_id][value] = count
 
     for bin_id in current_bins.keys():
         bin_contents = get_bin_data(bin_id)
         if bin_contents:
-            for value, current_count in current_bins[bin_id].items():
-                bin_contents[bin_id][value] = bin_contents[bin_id][value] + current_count \
-                    if value in bin_contents[bin_id] else current_count
+            for value, count in current_bins[bin_id].items():
+                 if value in bin_contents:
+                     bin_contents[value] += count
+                 else:
+                     bin_contents[value] = count
+
         else:
-            bin_contents = current_bins[bin_id]
+            bin_contents = dict(current_bins[bin_id])
         store_bin_data(bin_id, bin_contents)
-
-
 
 
 #######  Glue logic and convenience code ###########
 
-def count_frequencies_from_input(aggregator):
+def count_frequencies_from_input_and_store_bins():
     os.makedirs(TEMPDIR, exist_ok=True)
     parser = argparse.ArgumentParser(
         description="Python number counting script. run with --file to provide file to read.")
@@ -70,7 +68,7 @@ def count_frequencies_from_input(aggregator):
     intermediate_progress_display = 100 # every 100MB
 
     while True:
-        chunk = input_file.read(1024)
+        chunk = input_file.read(1024*1024)
         if not chunk:
             break
         uint32_array = numpy.frombuffer(chunk, dtype=numpy.uint32)
@@ -81,10 +79,12 @@ def count_frequencies_from_input(aggregator):
         crunched_mb += 1
 
 
+def get_binned_frequencies():
+    for i in range(0, BIN_COUNT):
+        data = get_bin_data(i)
+        if len(data.keys())>0 : # skip empty bins
+            yield data
+
 if __name__ == "__main__":
-
-    def stub_aggregator(x):
-        pass
-
-    count_frequencies_from_input(chunk_cruncher)
+    count_frequencies_from_input_and_store_bins()
 
