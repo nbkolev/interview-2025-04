@@ -15,12 +15,15 @@ As the provided file is degenerate JSON case in order to parse it with reasonabl
 
 * During development a smaller input file was produced with `bzip2 --decompress --stdout < bigf.json.bz2 | head -c 2M  > test.txt`
 * The processing.py executable supports --stdin and --file switches.
+* File analysis.sh provides conveinient progress report with "pipeview".
 
 # Result of execution:
 
 Runtime is around 20 minutes on Intel Core i3-12100/DDR4 3000Mhz running Ubuntu 6.14.0-15-generic on VirtualBox:
 
 ```console
+~/$ analysis.sh
+...
 2,69GiB 0:19:07 [2,40MiB/s] [================================================>] 100%            
 Records processed: 400000000
 Aggregating results...
