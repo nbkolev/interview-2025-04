@@ -1,12 +1,12 @@
 * Attempt to execute
-```
+```commandline
 ~/$ chmod +x ./b
 ~/$ ./b
 Segmentation fault.
 ```
 
 * After some fidding with the dissasembler the SIGSEGV is located after "TMPDIR" string which immediately strikes as environment variable. Some progress is apparent:
-```
+```commandline
 ~/$ chmod +x ./b
 ~/$ TMPDIR=./ ./b 
 Init done 0 .
@@ -34,7 +34,8 @@ momdkvjhradj|l|`|ps~u{w~vjnrr|?
 ```
 * it looks like sys_read() is in v11[] and v10[] contains the strange characters "momdkvjhradj|l|`|ps~u{w~vjnrr|?" which are probably obfuscated by some sort of XOR operation. 
 * We need to try to simulate it in plain C as XOR operation is reversible:
-```code
+
+```c
 #include <stdio.h>
 
 char v10[] = "momdkvjhradj|l|`|ps~u{w~vjnrr|?";
@@ -55,7 +56,7 @@ void main(void){
 ~~/$ ./reverse-xor 
 mnogoslozhnaparolaamanainstina
 ```
-* Final result
+# Final result
 ```commandline
 ~/$ TMPDIR=./ ./b 
 Init done 0 .
