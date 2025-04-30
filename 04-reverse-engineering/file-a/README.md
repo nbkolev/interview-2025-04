@@ -8,7 +8,7 @@ Segmentation fault.
 * Install IDA Disssasembler perform step by step trace
 * Try to create file ./pesho, then directory - nothing changes.
 * Rename executable to `./pesho` as this string is suspiciously close to beginning of execution and got output:
-```
+```commandline
 ~/$ cp ./ ./pesho
 ~/$ ./pesho
 0 127
