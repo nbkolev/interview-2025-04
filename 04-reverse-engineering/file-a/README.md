@@ -23,7 +23,7 @@ Segmentation fault.
 * Output stays the same after multiple executions it seems to be produced by printf("%d %d/n") the "%d %d/n" string is visible in the disassembly.
 * From the dissassembly data looks static, not computed.
 * The first column is monotonically increasing so examining the output by plotting it to Libreoffice Calc looks like some graph:
-![alt text](./A-output-plot.png)
+![alt text](A-output-plot.png)
 * As it resembles first derivative of acceleration trying integration:
 * ![alt text](A-output-integrated-plot.png)
 
