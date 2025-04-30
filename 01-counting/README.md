@@ -18,7 +18,8 @@ frequencies = np.unique_counts(np.fromfile(sys.stdin, dtype=np.uint32))
 # Development notes
 
 * During development an example non white noise file was produced by reusing the hdd data provided `bzip2 --decompress --stdout < bigf.json.bz2 | head -c 4G  > testdata-4G.bin`
-* The processing.py executable supports --stdin and --file switches.
+* The processing.py executable supports --stdin and --file switches
+* In order to test whether counting is indeed correct a synthetic test file was provided by `testdata-verifiable.c`
 
 # Requirements
 * Python + numpy (any recent versions)
