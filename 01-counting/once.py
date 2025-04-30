@@ -1,6 +1,6 @@
 from count_frequencies import count_frequencies_from_input_and_store_bins, get_binned_frequencies
 
-#count_frequencies_from_input_and_store_bins()
+count_frequencies_from_input_and_store_bins()
 
 seen_only_once = 0
 for frequency_bin in get_binned_frequencies():
