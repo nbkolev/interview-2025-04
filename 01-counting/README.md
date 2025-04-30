@@ -9,9 +9,10 @@ frequencies = np.unique_counts(np.fromfile(sys.stdin, dtype=np.uint32))
 ```
 
 # Description
-* Data is read by 1 MB chunks 
+* Data is read by 1 MB chunks. 
 * For every chunk data is converted with `numpy.frombuffer(chunk, dtype=numpy.uint32)` and processed with `numpy.unique_counts()`
-* Frequencies in the chunk are binned by `bin_id = value % BIN_COUNT` and bins are aggregated as files in `./frequencies/{bin_id}.pickle`
+* Frequencies in the chunk are binned by `bin_id = value % BIN_COUNT` and bins are aggregated as files in `./frequencies/{bin_id}.pickle`.
+* As a result python process consumes no more than 20 MB of RAM when processing test non white noise data.
 * A generator `get_binned_frequencies()` yields the bins to the aggregating functions for the required subtasks a) "count the unique numbers" and b) "count the unique numbers"
 
 # Development notes
