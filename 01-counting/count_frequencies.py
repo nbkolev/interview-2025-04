@@ -1,4 +1,4 @@
-import argparse, sys, pickle, os
+import argparse, sys, pickle, os, glob
 import tempfile
 from collections import defaultdict
 import numpy
@@ -48,7 +48,13 @@ def chunk_cruncher(array):
 #######  Glue logic and convenience code ###########
 
 def count_frequencies_from_input_and_store_bins():
+
+    # Cleanup cache
+    for filename in glob.glob(os.path.join(TEMPDIR, "*.pickle")):
+        os.unlink(filename)
+
     os.makedirs(TEMPDIR, exist_ok=True)
+
     parser = argparse.ArgumentParser(
         description="Python number counting script. run with --file to provide file to read.")
     parser.add_argument("--file")
